@@ -2,7 +2,6 @@
 
 main = imread('p1_image1.png');
 
-figure; imshow(main)
-
 d = drawline;
 
+figure; imshow(main)
