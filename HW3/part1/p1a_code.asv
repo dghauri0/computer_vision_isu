@@ -1,0 +1,20 @@
+%% Your code goes in this file. 
+
+main = imread('p1_image1.png');
+%imshow(main)
+
+%d = drawline;
+%pos = d.Position;
+%diffPos = diff(pos);
+%diameter = hypot(diffPos(1),diffPos(2))
+
+gray_image = rgb2gray(main);
+%imshow(gray_image); figure;
+
+%[centers,radii] = imfindcircles(main,[45 50],'ObjectPolarity','dark','Sensitivity',0.96, 'Method', 'twostage')
+[centers,radii] = imfindcircles(main,[45 50],'ObjectPolarity','dark','Sensitivity',0.95, 'Method', 'twostage','EdgeThreshold',0.099)
+
+imshow(main)
+h = viscircles(centers,radii);
+
+imwrite(main, h,"p1_image1_final.png");
