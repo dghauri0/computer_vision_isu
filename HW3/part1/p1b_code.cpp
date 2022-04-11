@@ -30,32 +30,68 @@ void show_wait_destroy(const char* winname, cv::Mat img);
 int main(int argc, char** argv)
 {
 	// Read the image file
-	Mat originalImage = imread("part1/p1_image1.png");
+	Mat originalImage0 = imread("part1/p1_image1.png");
+	Mat originalImage1 = imread("part1/p1_image2.png");
+	Mat originalImage2 = imread("part1/p1_image3.png");
 
 	// Check for failure on original image.
-	if (originalImage.empty())
+	if (originalImage0.empty() || originalImage1.empty() || originalImage2.empty())
 	{
 		cout << "Could not open or find the image" << endl;
 		cin.get(); //wait for any key press
 		return -1;
 	}
 
-	Mat grayImage;
-	cvtColor(originalImage, grayImage, COLOR_BGR2GRAY);
-	medianBlur(grayImage, grayImage, 5);
-	vector<Vec3f> circles;
-	HoughCircles(grayImage, circles, HOUGH_GRADIENT, 1, grayImage.rows / 20, 100, 25, 45, 50);
+	Mat grayImage0;
+	cvtColor(originalImage0, grayImage0, COLOR_BGR2GRAY);
+	medianBlur(grayImage0, grayImage0, 5);
+	vector<Vec3f> circles0;
+	HoughCircles(grayImage0, circles0, HOUGH_GRADIENT, 1, grayImage0.rows / 20, 100, 25, 45, 50);
+
+	Mat grayImage1;
+	cvtColor(originalImage1, grayImage1, COLOR_BGR2GRAY);
+	medianBlur(grayImage1, grayImage1, 5);
+	vector<Vec3f> circles1;
+	HoughCircles(grayImage1, circles1, HOUGH_GRADIENT, 1, grayImage1.rows / 20, 100, 25, 45, 50);
+
+	Mat grayImage2;
+	cvtColor(originalImage2, grayImage2, COLOR_BGR2GRAY);
+	medianBlur(grayImage2, grayImage2, 5);
+	vector<Vec3f> circles2;
+	HoughCircles(grayImage2, circles2, HOUGH_GRADIENT, 1, grayImage2.rows / 20, 100, 25, 45, 50);
 
 	
-	for (size_t i = 0; i < circles.size(); i++)
+	for (size_t i = 0; i < circles0.size(); i++)
 	{
-		Vec3i c = circles[i];
+		Vec3i c = circles0[i];
 		Point center = Point(c[0], c[1]);
 		// circle center
 		//circle(originalImage, center, 1, Scalar(0, 100, 100), 3, LINE_AA);
 		// circle outline
 		int radius = c[2];
-		circle(originalImage, center, radius, Scalar(255, 0, 255), 3, LINE_AA);
+		circle(originalImage0, center, radius, Scalar(255, 0, 255), 3, LINE_AA);
+	}
+
+	for (size_t i = 0; i < circles1.size(); i++)
+	{
+		Vec3i c = circles1[i];
+		Point center = Point(c[0], c[1]);
+		// circle center
+		//circle(originalImage, center, 1, Scalar(0, 100, 100), 3, LINE_AA);
+		// circle outline
+		int radius = c[2];
+		circle(originalImage1, center, radius, Scalar(255, 0, 255), 3, LINE_AA);
+	}
+
+	for (size_t i = 0; i < circles2.size(); i++)
+	{
+		Vec3i c = circles2[i];
+		Point center = Point(c[0], c[1]);
+		// circle center
+		//circle(originalImage, center, 1, Scalar(0, 100, 100), 3, LINE_AA);
+		// circle outline
+		int radius = c[2];
+		circle(originalImage2, center, radius, Scalar(255, 0, 255), 3, LINE_AA);
 	}
 	
 
@@ -63,20 +99,30 @@ int main(int argc, char** argv)
 	//waitKey();
 
 	// Window names
-	String finalImageWindow = "Final Image Window";
+	String finalImageWindow0 = "Final Image Window 0";
+	String finalImageWindow1 = "Final Image Window 1";
+	String finalImageWindow2 = "Final Image Window 2";
 
 	// Create Windows
-	namedWindow(finalImageWindow);
+	namedWindow(finalImageWindow0);
+	namedWindow(finalImageWindow1);
+	namedWindow(finalImageWindow2);
 
 	// Show images inside created windows
-	imshow(finalImageWindow, originalImage);
+	imshow(finalImageWindow0, originalImage0);
+	imshow(finalImageWindow1, originalImage1);
+	imshow(finalImageWindow2, originalImage2);
 
 	waitKey(0); // Wait for any keystroke in the window
 
-	imwrite("part1/p1_image1_final_c++.png", originalImage);
+	imwrite("part1/p1_image1_final_c++.png", originalImage0);
+	imwrite("part1/p1_image2_final_c++.png", originalImage1);
+	imwrite("part1/p1_image3_final_c++.png", originalImage2);
 
 	// Destroy the created window
-	destroyWindow(finalImageWindow);
+	destroyWindow(finalImageWindow0);
+	destroyWindow(finalImageWindow1);
+	destroyWindow(finalImageWindow2);
 
 	return 0;
 }
