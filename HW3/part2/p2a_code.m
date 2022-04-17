@@ -21,17 +21,46 @@ imshow(main0)
 
 imshow(main0)
 h0 = viscircles(centers0,radii0);
-pause
-imshow(main1)
-h1 = viscircles(centers1,radii1);
-pause
-imshow(main2)
-h2 = viscircles(centers2,radii2);
+f = getframe(gca);
+final = frame2im(f);
+str = cell(2,1);
+str{1} = '2';
+str{2} = '5';
+num = insertText(final, [800 270; 910 270], str, 'FontSize', 18);
+imshow(num)
+imwrite(num ,"p2_image1_final.png");
 pause
 
-%close all
-%clc
-%clear
+imshow(main1)
+h1 = viscircles(centers1,radii1);
+f = getframe(gca);
+final = frame2im(f);
+str = cell(4,1);
+str{1} = '3';
+str{2} = '3';
+str{3} = '3';
+str{4} = '3';
+num = insertText(final, [800 270; 910 270; 1040 270; 1160 270], str, 'FontSize', 18);
+imshow(num)
+imwrite(num ,"p2_image2_final.png");
+pause
+
+imshow(main2)
+h2 = viscircles(centers2,radii2);
+f = getframe(gca);
+final = frame2im(f);
+str = cell(2,1);
+str{1} = '2';
+str{2} = '3';
+num = insertText(final, [800 270; 910 270], str, 'FontSize', 18);
+imshow(num)
+imwrite(num ,"p2_image3_final.png");
+pause
+
+
+close all
+clc
+clear
 
 
 
