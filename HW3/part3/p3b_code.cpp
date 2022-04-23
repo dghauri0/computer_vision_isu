@@ -24,7 +24,6 @@ using namespace std;
 
 // Function Declarations
 void show_wait_destroy(const char* winname, cv::Mat img);
-void onMouse(int event, int x, int y, int, void*);
 
 int main(int argc, char* argv[]) {
 
@@ -83,10 +82,9 @@ int main(int argc, char* argv[]) {
 
 		
 
-		//show_wait_destroy("Binary Image", binaryImage);
-		namedWindow("Get coordinates");
-		setMouseCallback("Get coordinates", onMouse, 0);
-		
+		show_wait_destroy("Binary Image", binaryImage);
+		imwrite("part3/helper_coord.png", binaryImage);
+
 
 		count++;
 		output_cap.write(frame);
@@ -106,15 +104,4 @@ void show_wait_destroy(const char* winname, cv::Mat img) {
 	moveWindow(winname, 500, 0);
 	waitKey(0);
 	destroyWindow(winname);
-}
-
-// Taken from stack overflow for quick coordinate evaluation within an image.
-void onMouse(int event, int x, int y, int, void*)
-{
-	if (event != EVENT_LBUTTONDOWN)
-		return;
-
-	Point pt = Point(x, y);
-	std::cout << "x=" << pt.x << "\t y=" << pt.y << "\t value=" << thresh.at<uchar>(x, y) << "\n";
-
 }
