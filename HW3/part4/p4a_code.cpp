@@ -67,6 +67,10 @@ int main(int argc, char* argv[]) {
 			gray.rows / 32,
 			100, 30, 20, 40
 		);
+
+		imwrite("part4/p4_helper.png", frame);
+
+
 		for (size_t num = 0; num < circles.size(); num++) {
 			Vec3i c = circles[num];
 			Point center = Point(c[0], c[1]);
@@ -77,6 +81,8 @@ int main(int argc, char* argv[]) {
 			int x_coord = c[0];
 			int y_coord = c[1];
 			//printf("Here");
+
+
 			
 			// rgb[0] is blue, rgb[1] is green, and rgb[2] is red
 			if (frame.at<Vec3b>(y_coord, x_coord)[0] >= 0 && frame.at<Vec3b>(y_coord, x_coord)[0] <= 20) {
