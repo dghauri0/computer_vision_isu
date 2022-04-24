@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 	// Load input video
 	//  If your video is in a different source folder than your code, 
 	//  make sure you specify the directory correctly!
-	VideoCapture input_cap("part4/p4_video1.avi");
+	VideoCapture input_cap("part4/p4_video3.avi");
 
 	// Check validity of target file
 	if (!input_cap.isOpened()) {
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 	 *	 	we want our output to have the same properties as the input!
 	 */
 
-	VideoWriter output_cap("part4/p4a_video1_final.avi",
+	VideoWriter output_cap("part4/p4a_video3_final.avi",
 		VideoWriter::fourcc('H', '2', '6', '4'),
 		input_cap.get(CAP_PROP_FPS),
 		Size(input_cap.get(CAP_PROP_FRAME_WIDTH),
@@ -63,10 +63,18 @@ int main(int argc, char* argv[]) {
 		cvtColor(frame, gray, COLOR_BGR2GRAY);
 		medianBlur(gray, gray, 5);
 		vector<Vec3f> circles;
+		
 		HoughCircles(gray, circles, HOUGH_GRADIENT, 1,
 			gray.rows / 32,
 			100, 30, 25, 40
 		);
+		
+		/*
+		HoughCircles(gray, circles, HOUGH_GRADIENT_ALT, 1.5,
+			gray.rows / 32,
+			300, 0.9, 25, 40
+		);
+		*/
 
 		//imwrite("part4/p4_helper.png", frame);
 
@@ -89,9 +97,10 @@ int main(int argc, char* argv[]) {
 				if (frame.at<Vec3b>(y_coord, x_coord)[1] >= 0 && frame.at<Vec3b>(y_coord, x_coord)[1] <= 20) {
 					if (frame.at<Vec3b>(y_coord, x_coord)[2] >= 200 && frame.at<Vec3b>(y_coord, x_coord)[2] <= 255) {
 
-						// Draw circle around red circle.
+						// Draw circle around red piece.
 						//printf("Wow a red circle");
-						circle(frame, center, radius, Scalar(255, 0, 255), 3, LINE_AA);
+						circle(frame, center, radius + 7, Scalar(0, 0, 0), 3, LINE_AA);
+						circle(frame, center, radius + 2, Scalar(255, 0, 255), -1, FILLED);
 					}
 				}
 			}
@@ -100,9 +109,10 @@ int main(int argc, char* argv[]) {
 				if (frame.at<Vec3b>(y_coord, x_coord)[1] >= 230 && frame.at<Vec3b>(y_coord, x_coord)[1] <= 255) {
 					if (frame.at<Vec3b>(y_coord, x_coord)[2] >= 230 && frame.at<Vec3b>(y_coord, x_coord)[2] <= 255) {
 
-						// Draw circle around red circle.
-						//printf("Wow a red circle");
-						circle(frame, center, radius, Scalar(255, 0, 255), 3, LINE_AA);
+						// Draw circle around white piece.
+						//printf("Wow a white circle");
+						circle(frame, center, radius + 7, Scalar(0, 0, 0), 3, LINE_AA);
+						circle(frame, center, radius + 2, Scalar(0, 255, 0), -1, FILLED);
 					}
 				}
 			}
