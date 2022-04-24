@@ -65,10 +65,10 @@ int main(int argc, char* argv[]) {
 		vector<Vec3f> circles;
 		HoughCircles(gray, circles, HOUGH_GRADIENT, 1,
 			gray.rows / 32,
-			100, 30, 20, 40
+			100, 30, 25, 40
 		);
 
-		imwrite("part4/p4_helper.png", frame);
+		//imwrite("part4/p4_helper.png", frame);
 
 
 		for (size_t num = 0; num < circles.size(); num++) {
@@ -96,9 +96,9 @@ int main(int argc, char* argv[]) {
 				}
 			}
 
-			if (frame.at<Vec3b>(y_coord, x_coord)[0] >= 0 && frame.at<Vec3b>(y_coord, x_coord)[0] <= 20) {
-				if (frame.at<Vec3b>(y_coord, x_coord)[1] >= 0 && frame.at<Vec3b>(y_coord, x_coord)[1] <= 20) {
-					if (frame.at<Vec3b>(y_coord, x_coord)[2] >= 200 && frame.at<Vec3b>(y_coord, x_coord)[2] <= 255) {
+			if (frame.at<Vec3b>(y_coord, x_coord)[0] >= 230 && frame.at<Vec3b>(y_coord, x_coord)[0] <= 255) {
+				if (frame.at<Vec3b>(y_coord, x_coord)[1] >= 230 && frame.at<Vec3b>(y_coord, x_coord)[1] <= 255) {
+					if (frame.at<Vec3b>(y_coord, x_coord)[2] >= 230 && frame.at<Vec3b>(y_coord, x_coord)[2] <= 255) {
 
 						// Draw circle around red circle.
 						//printf("Wow a red circle");
