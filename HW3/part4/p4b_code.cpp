@@ -14,15 +14,15 @@ using namespace std;
 Retrieved rough mappings of coordinates for triangle clusters from matlab. Duplicated many for simplicity in iteration.
  */
 
-const int tri_x[24][2] = { {54, 202}, {202, 351}, {351, 492}, {492, 634}, {634, 778}, {778, 930},
+const int tri_x[26][2] = { {54, 202}, {202, 351}, {351, 492}, {492, 634}, {634, 778}, {778, 930},
 						   {1030, 1187}, {1187, 1328}, {1328, 1472}, {1472, 1613}, {1613, 1757}, {1757, 1912},
 						   {54, 202}, {202, 351}, {351, 492}, {492, 634}, {634, 778}, {778, 930},
-						   {1030, 1187}, {1187, 1328}, {1328, 1472}, {1472, 1613}, {1613, 1757}, {1757, 1912} };
+						   {1030, 1187}, {1187, 1328}, {1328, 1472}, {1472, 1613}, {1613, 1757}, {1757, 1912}, {886, 1082}, {886, 1082} };
 
-const int tri_y[24][2] = { {0, 456}, {0, 456}, {0, 456}, {0, 456}, {0, 456}, {0, 456},
+const int tri_y[26][2] = { {0, 456}, {0, 456}, {0, 456}, {0, 456}, {0, 456}, {0, 456},
 						   {0, 456}, {0, 456}, {0, 456}, {0, 456}, {0, 456}, {0, 456},
 						   {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088},
-						   {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088} };
+						   {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088}, {651, 1088}, {433, 544}, {544, 653} };
 
 // compile command
 // cl /EHsc part4\p4b_code.cpp /I Y:\CodeLib\opencv\include /link /LIBPATH:Y:\CodeLib\opencv\x64\vc17\lib opencv_world455.lib
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	// Load input video
 	//  If your video is in a different source folder than your code, 
 	//  make sure you specify the directory correctly!
-	VideoCapture input_cap("part4/p4_video1.avi");
+	VideoCapture input_cap("part4/p4_video3.avi");
 
 	// Check validity of target file
 	if (!input_cap.isOpened()) {
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
 	 *	 	we want our output to have the same properties as the input!
 	 */
 
-	VideoWriter output_cap("part4/p4b_video1_final.avi",
+	VideoWriter output_cap("part4/p4b_video3_final.avi",
 		VideoWriter::fourcc('H', '2', '6', '4'),
 		input_cap.get(CAP_PROP_FPS),
 		Size(input_cap.get(CAP_PROP_FRAME_WIDTH),
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
 		//cout << "working " << count << "\n";
 
 		Mat gray;
-		const int triangles = 24;
+		const int triangles = 26;
 		cvtColor(frame, gray, COLOR_BGR2GRAY);
 		medianBlur(gray, gray, 5);
 		vector<Vec3f> circles[triangles];
@@ -76,7 +76,10 @@ int main(int argc, char* argv[]) {
 		//Rect myROI(x_left_offset, y_top_offset, x_right_offset - x_left_offset, y_bottom_offset - y_top_offset);
 
 		//show_wait_destroy("test", gray(myROI));
-		int i, j;
+		int i;
+		Point centered[26];
+		char colors[26]{};
+
 		for (i = 0; i < triangles; i++) {
 			Rect myROI(tri_x[i][0], tri_y[i][0], tri_x[i][1] - tri_x[i][0], tri_y[i][1] - tri_y[i][0]);
 
@@ -96,14 +99,42 @@ int main(int argc, char* argv[]) {
 
 			//imwrite("part4/p4_helper.png", frame);
 
-			printf("Circles found in frame for triangle %d: %d\n", i, (int)circles[i].size());
+			//printf("Circles found in frame for triangle %d: %d\n", i, (int)circles[i].size());
 			//show_wait_destroy("test", triUnderAnalysis);
-
+			if (circles[i].empty()) {
+				if (i < 12) {
+					centered[i] = Point((tri_x[i][0] + tri_x[i][1])/2, 478);
+					//printf("Here\n");
+				}
+				else if (i >= 12 && i < 24) {
+					centered[i] = Point((tri_x[i][0] + tri_x[i][1]) / 2, 578);
+				}
+				else if (i == 24) {
+					centered[i] = Point((tri_x[i][0] + tri_x[i][1]) / 2, 478);
+				}
+				else {
+					centered[i] = Point((tri_x[i][0] + tri_x[i][1]) / 2, 578);
+				}
+			}
 
 			for (size_t num = 0; num < circles[i].size(); num++) {
 				Vec3i c = circles[i][num];
 				Point center = Point(c[0] + tri_x[i][0], c[1] + tri_y[i][0]);
+				//printf("%d %d\n", c[0], c[1]);
+				//cout << c << '\n';
 
+				if (i < 12) {
+					centered[i] = Point(c[0] + tri_x[i][0], 478);
+				}
+				else if (i >= 12 && i < 24) {
+					centered[i] = Point(c[0] + tri_x[i][0], 578);
+				}
+				else if (i == 24) {
+					centered[i] = Point(c[0] + tri_x[i][0], 478);
+				}
+				else {
+					centered[i] = Point(c[0] + tri_x[i][0], 578);
+				}
 
 				//circle(frame, center, 1, Scalar(255, 0, 0), 3, LINE_AA);
 				int radius = c[2];
@@ -112,16 +143,17 @@ int main(int argc, char* argv[]) {
 				int y_coord = c[1] + tri_y[i][0];
 				//printf("Here");
 
-				circle(frame, center, radius + 7, Scalar(0, 0, 0), 3, LINE_AA);
+				//circle(frame, center, radius + 7, Scalar(0, 0, 0), 3, LINE_AA);
 
 				// rgb[0] is blue, rgb[1] is green, and rgb[2] is red
 				if (frame.at<Vec3b>(y_coord, x_coord)[0] >= 0 && frame.at<Vec3b>(y_coord, x_coord)[0] <= 20) {
 					if (frame.at<Vec3b>(y_coord, x_coord)[1] >= 0 && frame.at<Vec3b>(y_coord, x_coord)[1] <= 20) {
 						if (frame.at<Vec3b>(y_coord, x_coord)[2] >= 200 && frame.at<Vec3b>(y_coord, x_coord)[2] <= 255) {
 
-							// Draw circle around red piece.
+							// Draw black circle around red piece.
 							//printf("Wow a red circle");
-							//circle(frame, center, radius + 7, Scalar(0, 0, 0), 3, LINE_AA);
+							circle(frame, center, radius + 7, Scalar(0, 0, 0), 3, LINE_AA);
+							colors[i] = 'r';
 						}
 					}
 				}
@@ -130,15 +162,29 @@ int main(int argc, char* argv[]) {
 					if (frame.at<Vec3b>(y_coord, x_coord)[1] >= 230 && frame.at<Vec3b>(y_coord, x_coord)[1] <= 255) {
 						if (frame.at<Vec3b>(y_coord, x_coord)[2] >= 230 && frame.at<Vec3b>(y_coord, x_coord)[2] <= 255) {
 
-							// Draw circle around white piece.
+							// Draw green circle around white piece.
 							//printf("Wow a white circle");
-							//circle(frame, center, radius + 7, Scalar(0, 0, 0), 3, LINE_AA);
+							circle(frame, center, radius + 7, Scalar(0, 255, 0), 3, LINE_AA);
+							colors[i] = 'w';
 						}
 					}
 				}
 
 			}
 		}
+
+		for (i = 0; i < triangles; i++) {
+			// Add numbers
+			char text[4];
+			int circle_size = circles[i].size();
+			sprintf(text, "%d%c", circle_size, colors[i]);
+			cout << centered[i] << '\n';
+			putText(frame, text, centered[i], cv::FONT_HERSHEY_DUPLEX, 1.0, CV_RGB(255, 0, 0), 2);
+
+
+		}
+
+
 		count++;
 		output_cap.write(frame);
 	}
