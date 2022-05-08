@@ -29,6 +29,10 @@ def slow_dft(input_vector_real, input_vector_imaginary):
     return output_real, output_imaginary
 
 
+# Implementation of Slow O(size^2) IDFT. Takes two input vectors. First takes in the
+# real part of the vector element and the second takes the imaginary part. Similarly,
+# after computation, the real and imaginary parts are returned in a 2D array (element 0 of
+# 2D array is real and element 1 of 2D array is imaginary).
 def slow_idft(input_vector_real, input_vector_imaginary):
     size = 0
     if len(input_vector_real) == len(input_vector_imaginary):
@@ -44,12 +48,13 @@ def slow_idft(input_vector_real, input_vector_imaginary):
         for k in range(size):
             angle = (2 * math.pi * k * n) / size
             sum_real = sum_real + (input_vector_real[k] * math.cos(angle)) - (
-                        input_vector_imaginary[k] * math.sin(angle))
+                    input_vector_imaginary[k] * math.sin(angle))
             sum_imaginary = sum_imaginary + (input_vector_real[k] * math.sin(angle)) + (
-                        input_vector_imaginary[k] * math.cos(angle))
+                    input_vector_imaginary[k] * math.cos(angle))
         output_real.append(round(sum_real / size, 5))
         output_imaginary.append(round(sum_imaginary / size, 5))
     return output_real, output_imaginary
+
 
 input_vector_real = [0, math.sqrt(2) / 2, 1, math.sqrt(2) / 2, 0, -math.sqrt(2) / 2, -1, -math.sqrt(2) / 2]
 input_vector_complex = [0, 0, 0, 0, 0, 0, 0, 0]
