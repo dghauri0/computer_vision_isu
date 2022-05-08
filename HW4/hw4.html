@@ -164,7 +164,47 @@ def slow_idft(input_vector_real, input_vector_imaginary):
                   <div class="content monospaced">
                      <!-- MAKE CHANGES HERE: Part 2a code -->
                      <pre>
-// Insert your code here
+import cmath
+
+
+# Implementation of Fast O(nlog(n)) FFT. Uses divide-and-conquer approach.
+# Figured cmath is a better library to use here, so I don't have to separate
+# real and imaginary parts in calculation.
+def fft(input_vector):
+    size = len(input_vector)
+
+    # Base case
+    if size == 1:
+        return input_vector
+
+    # Perform D&C and loop through on each subsequent return
+    # applying exponential calculation.
+    else:
+
+        # Initialize output vector
+        output_vector = []
+        for i in range(size):
+            output_vector.append(-1)
+
+        # log(n) from recursion tree generation. Split input vector into
+        # even and odd element sub-parts.
+        even = fft(input_vector[0::2])
+        odd = fft(input_vector[1::2])
+
+        # n from loop traversal
+        for k in range(round(size / 2)):
+            q = cmath.exp(-2j * cmath.pi * k / size) * odd[k]
+            temp_0 = even[k] + q
+            temp_0_real = round(temp_0.real, 4)
+            temp_0_imag = round(temp_0.imag, 4)
+            output_vector[k] = temp_0_real + (temp_0_imag * 1j)
+
+            temp_1 = even[k] - q
+            temp_1_real = round(temp_1.real, 4)
+            temp_1_imag = round(temp_1.imag, 4)
+            output_vector[k + round(size / 2)] = temp_1_real + (temp_1_imag * 1j)
+
+        return output_vector
 					 </pre>
                      <!-- END CHANGES -->
                   </div>
@@ -185,7 +225,60 @@ def slow_idft(input_vector_real, input_vector_imaginary):
                   <div class="content monospaced">
                      <!-- MAKE CHANGES HERE: Part 2b code -->
                      <pre>
-// Insert your code here
+import cmath
+					 
+					 
+# Implementation of Fast O(nlog(n)) IFFT. Uses divide-and-conquer approach.
+# Figured cmath is a better library to use here, so I don't have to separate
+# real and imaginary parts in calculation.
+def ifft(input_vector):
+    size = len(input_vector)
+
+    # Base case
+    if size == 1:
+        return input_vector
+
+    # Perform D&C and loop through on each subsequent return
+    # applying exponential calculation.
+    else:
+
+        # Initialize output vector
+        output_vector = []
+        for i in range(size):
+            output_vector.append(-1)
+
+        # O(log(n)) from recursion tree generation. Split input vector into
+        # even and odd element sub-parts.
+        even = ifft(input_vector[0::2])
+        odd = ifft(input_vector[1::2])
+
+        # O(n) from loop traversal
+        for k in range(round(size / 2)):
+            q = cmath.exp(2j * cmath.pi * k / size) * odd[k]
+            temp_0 = (even[k] + q)
+            temp_0_real = round(temp_0.real, 4)
+            temp_0_imag = round(temp_0.imag, 4)
+            output_vector[k] = temp_0_real + (temp_0_imag * 1j)
+
+            temp_1 = (even[k] - q)
+            temp_1_real = round(temp_1.real, 4)
+            temp_1_imag = round(temp_1.imag, 4)
+            output_vector[k + round(size / 2)] = temp_1_real + (temp_1_imag * 1j)
+
+        return output_vector
+
+
+# Final scaling helper function for IFFT. This was needed as
+# dividing by size as required by the IDFT base algorithm at every level
+# in the recursion tree resulted in improper scaling. Therefore, we do it instead
+# at the very end stage, which means we need to call this function seperately once
+# we exit the main ifft function. Still, big-o is not violated (iirc) as we still have
+# O(nlog(n)) + O(n) = O(nlog(n))
+def scaling_ifft(vector, size):
+    output_vector = []
+    for i in range(size):
+        output_vector.append(vector[i] / size)
+    return output_vector
 					 </pre>
                      <!-- END CHANGES -->
                   </div>
@@ -221,7 +314,7 @@ def slow_idft(input_vector_real, input_vector_imaginary):
                   <div class="content monospaced">
                      <!-- MAKE CHANGES HERE: Part 3a results -->
                      <pre>
-// Insert your resulting vector here
+[0j, -4j, 0j, 0j, 0j, 0j, 0j, 4j]
 					 </pre>
                      <!-- END CHANGES -->
                   </div>
@@ -236,9 +329,10 @@ def slow_idft(input_vector_real, input_vector_imaginary):
                   <div class="content monospaced">
                      <!-- MAKE CHANGES HERE: Part 1c results -->
                      <pre>
-// Insert your new resulting vector here
+My Implementation: [0j, -4j, 0j, 0j, 0j, 0j, 0j, 4j]
+MATLAB: 0.0000 + 0.0000i   0.0000 - 4.0000i   0.0000 + 0.0000i   0.0000 + 0.0000i   0.0000 + 0.0000i   0.0000 - 0.0000i   0.0000 + 0.0000i   0.0000 + 4.0000i 
 
-// Insert any comments here 
+No discrepancies exist. My implementation and MATLAB's match as expected (except representation/formatting). 
 					 </pre>
                      <!-- END CHANGES -->
                   </div>
@@ -266,7 +360,7 @@ def slow_idft(input_vector_real, input_vector_imaginary):
                   <div class="content monospaced">
                      <!-- MAKE CHANGES HERE: Part 3b results -->
                      <pre>
-// Insert your resulting vector here
+[0j, (0.7071125+0j), (1+0j), (0.7071125+0j), 0j, (-0.7071125+0j), (-1+0j), (-0.7071125+0j)]
 					 </pre>
                      <!-- END CHANGES -->
                   </div>
@@ -282,9 +376,10 @@ def slow_idft(input_vector_real, input_vector_imaginary):
                   <div class="content monospaced">
                      <!-- MAKE CHANGES HERE: Part 3b results -->
                      <pre>
-// Insert your new resulting vector here
+My Implementation: [0j, (0.7071125+0j), (1+0j), (0.7071125+0j), 0j, (-0.7071125+0j), (-1+0j), (-0.7071125+0j)]
+MATLAB: 0    0.7071    1.0000    0.7071         0   -0.7071   -1.0000   -0.7071
 
-// Insert any comments here 
+My implementation and MATLAB's match as expected. They differ in rounding and representation (as I was using the cmath library in python). One thing to note is that I had to use a scaling helper function at the end of doing the entire ifft computation as scaling based on the base dft equation in fft made it happen at every stage in the recursion tree -- giving an inaccurate result. So basically, instead, I run ifft() on my vector, and then feed the output of that into the scaling_ifft() function. This gives us an upper-bound of O(nlog(n)) + O(n) = O(nlog(n)) so we should be still good.
 					 </pre>
                      <!-- END CHANGES -->
                   </div>
