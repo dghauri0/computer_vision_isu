@@ -43,8 +43,10 @@ def slow_idft(input_vector_real, input_vector_imaginary):
         sum_imaginary = 0
         for k in range(size):
             angle = (2 * math.pi * k * n) / size
-            sum_real = sum_real + (input_vector_real[k] * math.cos(angle)) + (input_vector_imaginary[k] * math.sin(angle))
-            sum_imaginary = sum_imaginary + (input_vector_real[k] * math.sin(angle)) + (input_vector_imaginary[k] * math.cos(angle))
+            sum_real = sum_real + (input_vector_real[k] * math.cos(angle)) - (
+                        input_vector_imaginary[k] * math.sin(angle))
+            sum_imaginary = sum_imaginary + (input_vector_real[k] * math.sin(angle)) + (
+                        input_vector_imaginary[k] * math.cos(angle))
         output_real.append(round(sum_real / size, 5))
         output_imaginary.append(round(sum_imaginary / size, 5))
     return output_real, output_imaginary
