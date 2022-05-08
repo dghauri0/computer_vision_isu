@@ -646,14 +646,14 @@ S2 = spectrogram(Y2, 512, 256, 512, fs2, 'yaxis');
 					<tr class="row1">
 						<td class="col0">
 							<audio class="media" controls="controls">
-								<source src="input/Part_6/areacode1.wav" type="audio/wav" />
-								<a href="input/Part_6/areacode1.wav" class="media mediafile mf_wav" title="areacode1">areacode1</a>
+								<source src="input/Part_6/touch-tone-515.wav" type="audio/wav" />
+								<a href="input/Part_6/touch-tone-515.wav" class="media mediafile mf_wav" title="areacode1">areacode1</a>
 							</audio>
 						</td>
 						<td class="col1">
 							<span class="image">
 								<!-- MAKE CHANGES HERE: Part 6 Spectrogram -->
-								<img src="output/Part_6/placeholder1.jpg" alt="Spectrogram1" width="100%">
+								<img src="output/Part_6/spectrogram_515.png" alt="Spectrogram1" width="100%">
 								<!-- END CHANGES -->
                             </span>
 						</td>
@@ -661,14 +661,14 @@ S2 = spectrogram(Y2, 512, 256, 512, fs2, 'yaxis');
 					<tr class="row2">
 						<td class="col0">
 							<audio class="media" controls="controls">
-								<source src="input/Part_6/areacode2.wav" type="audio/wav" />
-								<a href="input/Part_6/areacode2.wav" class="media mediafile mf_wav" title="areacode2">areacode2</a>
+								<source src="input/Part_6/touch-tone-563.wav" type="audio/wav" />
+								<a href="input/Part_6/touch-tone-563.wav" class="media mediafile mf_wav" title="areacode2">areacode2</a>
 							</audio>
 						</td>
 						<td class="col1">
 							<span class="image">
 								<!-- MAKE CHANGES HERE: Part 6 Spectrogram -->
-								<img src="output/Part_6/placeholder2.jpg" alt="Spectrogram2" width="100%">
+								<img src="output/Part_6/spectrogram_563.png" alt="Spectrogram2" width="100%">
 								<!-- END CHANGES -->
                             </span>
 						</td>
@@ -676,14 +676,14 @@ S2 = spectrogram(Y2, 512, 256, 512, fs2, 'yaxis');
 					<tr class="row3">
 						<td class="col0">
 							<audio class="media" controls="controls">
-								<source src="input/Part_6/areacode3.wav" type="audio/wav" />
-								<a href="input/Part_6/areacode3.wav" class="media mediafile mf_wav" title="areacode3">areacode3</a>
+								<source src="input/Part_6/touch-tone-309.wav" type="audio/wav" />
+								<a href="input/Part_6/touch-tone-309.wav" class="media mediafile mf_wav" title="areacode3">areacode3</a>
 							</audio>
 						</td>
 						<td class="col1">
 							<span class="image">
 								<!-- MAKE CHANGES HERE: Part 6 Spectrogram -->
-								<img src="output/Part_6/placeholder3.jpg" alt="Spectrogram3" width="100%">
+								<img src="output/Part_6/spectrogram_309.png" alt="Spectrogram3" width="100%">
 								<!-- END CHANGES -->
                             </span>
 						</td>
@@ -695,7 +695,65 @@ S2 = spectrogram(Y2, 512, 256, 512, fs2, 'yaxis');
                   <div class="content monospaced">
                      <!-- MAKE CHANGES HERE: Part 6 code -->
                      <pre>
-// Insert your code here
+fs = 44100;  % sampling frequency
+
+% Uses given class functions for dial_digit and dial_number
+
+% dial area code 515
+dialAreaCode_0 = dial_number('515', 0.5, 0.2, fs);  
+sound(dialAreaCode_0, fs);
+audiowrite('touch-tone-515.wav', dialAreaCode_0, fs);
+pause(5)
+
+% dial area code 515
+dialAreaCode_1 = dial_number('563', 0.5, 0.2, fs);  
+sound(dialAreaCode_1, fs);
+audiowrite('touch-tone-563.wav', dialAreaCode_1, fs);
+pause(5)
+
+% dial area code 309
+dialAreaCode_2 = dial_number('309', 0.5, 0.2, fs);  
+sound(dialAreaCode_2, fs);
+audiowrite('touch-tone-309.wav', dialAreaCode_2, fs);
+pause(5)
+
+
+% Y0   - audio data samples
+% 512 - window size  (in samples)
+% 256 - overlap      (in samples)
+% 512 - FFT size     (in samples)
+% fs  - sampling frequency (in Hz)
+% 'yaxis' - put the frequencies along the y axis
+figure; spectrogram(dialAreaCode_0, 512, 256, 512, fs, 'yaxis'); 
+title('Spectrogram for Y0');
+
+% Y1   - audio data samples
+% 512 - window size  (in samples)
+% 256 - overlap      (in samples)
+% 512 - FFT size     (in samples)
+% fs  - sampling frequency (in Hz)
+% 'yaxis' - put the frequencies along the y axis
+figure; spectrogram(dialAreaCode_1, 512, 256, 512, fs, 'yaxis'); 
+title('Spectrogram for Y1');
+
+% Y2   - audio data samples
+% 512 - window size  (in samples)
+% 256 - overlap      (in samples)
+% 512 - FFT size     (in samples)
+% fs  - sampling frequency (in Hz)
+% 'yaxis' - put the frequencies along the y axis
+figure; spectrogram(dialAreaCode_2, 512, 256, 512, fs, 'yaxis'); 
+title('Spectrogram for Y2');
+
+% store the spectrogram data in the complex matrix S
+S0 = spectrogram(dialAreaCode_0, 512, 256, 512, fs, 'yaxis');
+S1 = spectrogram(dialAreaCode_1, 512, 256, 512, fs, 'yaxis');
+S2 = spectrogram(dialAreaCode_2, 512, 256, 512, fs, 'yaxis');
+
+% play it
+%sound(Y0, fs0)
+%sound(Y1, fs1)
+%sound(Y2, fs2)
 					 </pre>
                      <!-- END CHANGES -->
                   </div>
