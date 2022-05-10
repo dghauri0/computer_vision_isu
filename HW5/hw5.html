@@ -432,12 +432,12 @@ pi =  [1.0, 0.0]
          <div class="title">Result</div>
          <div class="content monospaced">
             <pre>
-    HMM1  HMM2  HMM3  HMM4  HMM5
-O1  L=?   *L=?  ...
-O2  *L=?   L=?  ...
-O3  L=?   ...
-O4  L=?
-O5  L=?
+    HMM1       HMM2             HMM3        HMM4                     HMM5
+O1  L=0.0      L=0.0            L=0.0       L=0.0                   *L=0.10546875
+O2  L=0.0      L=0.0            L=0.0      *L=0.00396370630656       L=0.0
+O3  L=0.0     *L=0.01562034375  L=0.0       L=0.0                    L=0.0
+O4  L=0.0      L=0.0           *L=0.148104  L=0.0007966754611199998  L=0.0
+O5 *L=0.00864  L=0.0            L=0.0       L=0.0                    L=0.0
   </pre>
          </div>
       </div>
@@ -445,7 +445,75 @@ O5  L=?
        <div class="title">Code</div>
            <div class="content monospaced">
     <pre>
-// Insert your code here.
+import part2_forward_algorithm
+
+# From lecture as check
+A_ex = [[0.5, 0.5],
+        [0, 1]]
+B_ex = [[0.5, 0.0, 0.5],
+        [0, 1, 0]]
+pi_ex = [1, 0]
+O_ex = [0, 2, 1]
+
+# HMM 1:
+A_1 = [[1.0, 0.0], [0.5, 0.5]]
+B_1 = [[0.4, 0.6, 0.0], [0.0, 0.0, 1.0]]
+pi_1 = [0.0, 1.0]
+
+# HMM 2:
+A_2 = [[0.25, 0.75], [1.0, 0.0]]
+B_2 = [[0, 1.0, 0], [0.66, 0.0, 0.34]]
+pi_2 = [1.0, 0.0]
+
+# HMM 3:
+A_3 = [[0.0, 1.0], [1.0, 0.0]]
+B_3 = [[1.0, 0.0, 0.0], [0.0, 0.66, 0.34]]
+pi_3 = [1.0, 0.0]
+
+# HMM 4:
+A_4 = [[1, 0], [0.44, 0.56]]
+B_4 = [[0.36, 0.42, 0.22], [1.0, 0, 0]]
+pi_4 = [0, 1.0]
+
+# HMM 5:
+A_5 = [[0.0, 1.0], [1.0, 0.0]]
+B_5 = [[0.25, 0.75, 0.0], [1.0, 0.0, 0.0]]
+pi_5 = [1.0, 0.0]
+
+O = [[1, 0, 0, 0, 1, 0, 1],
+     [0, 0, 0, 1, 1, 2, 0],
+     [1, 1, 0, 1, 0, 1, 2],
+     [0, 1, 0, 2, 0, 1, 0],
+     [2, 2, 0, 1, 1, 0, 1]]
+
+alpha = [[None] for i in range(6)]
+
+# Iterate through each observation sequence
+for i in range(len(O)):
+    print("Observation Sequence ", i)
+
+    # Create all alpha variable N-by-T vectors
+    alpha[0] = part2_forward_algorithm.forward_algorithm(A_ex, B_ex, pi_ex, O_ex)
+    alpha[1] = part2_forward_algorithm.forward_algorithm(A_1, B_1, pi_1, O[i])
+    alpha[2] = part2_forward_algorithm.forward_algorithm(A_2, B_2, pi_2, O[i])
+    alpha[3] = part2_forward_algorithm.forward_algorithm(A_3, B_3, pi_3, O[i])
+    alpha[4] = part2_forward_algorithm.forward_algorithm(A_4, B_4, pi_4, O[i])
+    alpha[5] = part2_forward_algorithm.forward_algorithm(A_5, B_5, pi_5, O[i])
+
+    # Iterate through each alpha associated with each HMM
+    count = 0
+    for j in range(len(alpha)):
+        L = 0
+
+        # Sum last elements of each state
+        for states in range(len(alpha[j])):
+            L += alpha[j][states][len(alpha[j][states]) - 1]
+        print("Likelihood for HMM ", count, ":", L)
+        count = count + 1
+    print(alpha)
+    print()
+
+
 </pre>
     </div>
     </div>

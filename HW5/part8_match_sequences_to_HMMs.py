@@ -41,13 +41,28 @@ O = [[1, 0, 0, 0, 1, 0, 1],
 
 alpha = [[None] for i in range(6)]
 
+# Iterate through each observation sequence
 for i in range(len(O)):
+    print("Observation Sequence ", i)
+
+    # Create all alpha variable N-by-T vectors
     alpha[0] = part2_forward_algorithm.forward_algorithm(A_ex, B_ex, pi_ex, O_ex)
     alpha[1] = part2_forward_algorithm.forward_algorithm(A_1, B_1, pi_1, O[i])
     alpha[2] = part2_forward_algorithm.forward_algorithm(A_2, B_2, pi_2, O[i])
     alpha[3] = part2_forward_algorithm.forward_algorithm(A_3, B_3, pi_3, O[i])
     alpha[4] = part2_forward_algorithm.forward_algorithm(A_4, B_4, pi_4, O[i])
     alpha[5] = part2_forward_algorithm.forward_algorithm(A_5, B_5, pi_5, O[i])
-    for j in range()
 
-print(alpha)
+    # Iterate through each alpha associated with each HMM
+    count = 0
+    for j in range(len(alpha)):
+        L = 0
+
+        # Sum last elements of each state
+        for states in range(len(alpha[j])):
+            L += alpha[j][states][len(alpha[j][states]) - 1]
+        print("Likelihood for HMM ", count, ":", L)
+        count = count + 1
+    print(alpha)
+    print()
+
