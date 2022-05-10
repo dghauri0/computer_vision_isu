@@ -94,7 +94,50 @@
                   <div class="title">Source</div>
                   <div class="content monospaced">
                      <pre>
-// Insert your code here
+# From lecture as check
+A_ex = [[0.5, 0.5],
+        [0, 1]]
+B_ex = [[0.5, 0.0, 0.5],
+        [0, 1, 0]]
+pi_ex = [1, 0]
+O_ex = [0, 2, 1]
+
+# HMM model parameters given from 3A
+A_3a = [[0.66, 0.34],
+        [1, 0]]
+B_3a = [[0.5, 0.25, 0.25],
+        [0.1, 0.1, 0.8]]
+pi_3a = [0.8, 0.2]
+
+# HMM model parameters given from 3B
+A_3b = [[0.8, 0.1, 0.1],
+        [0.4, 0.2, 0.4],
+        [0, 0.3, 0.7]]
+B_3b = [[0.66, 0.34, 0],
+        [0, 0, 1],
+        [0.5, 0.4, 0.1]]
+pi_3b = [0.6, 0, 0.4]
+
+O_3 = [0, 1, 0, 2, 0, 1, 0]
+
+
+def forward_algorithm(A, B, pi, O):
+    forward_variable_array = [[0] * len(O) for i in range(len(pi))]
+    for time in range(len(O)):
+        for state in range(len(pi)):
+            if time == 0:
+                forward_variable_array[state][time] = pi[state] * B[state][O[time]]
+            else:
+                for i in range(len(pi)):
+                    forward_variable_array[state][time] += forward_variable_array[i][time - 1] * A[i][state] * B[state][
+                        O[time]]
+
+    return forward_variable_array
+
+
+print(forward_algorithm(A_3a, B_3a, pi_3a, O_3))
+print(forward_algorithm(A_3b, B_3b, pi_3b, O_3))
+
 					 </pre>
                   </div>
                </div>
@@ -129,7 +172,8 @@ pi = [0.8, 0.2]
                    <div class="title">Result</div>
                    <div class="content monospaced">
                       <pre>
-// Insert the computed N-by-T array for the forward variable alpha here.
+[[0.4, 0.07100000000000001, 0.030230000000000003, 0.00559145, 0.005956458500000001, 0.0010303429775000003, 0.00044127297707500016],
+ [0.020000000000000004, 0.013600000000000001, 0.0024140000000000008, 0.008222560000000002, 0.00019010930000000004, 0.00020251958900000005, 3.503166123500001e-05]]
             </pre>
                    </div>
                 </div>
@@ -150,7 +194,10 @@ pi = [0.6, 0, 0.4]
              <div class="title">Result</div>
              <div class="content monospaced">
                 <pre>
-// Insert the computed N-by-T array for the forward variable alpha here.
+[[0.396, 0.10771200000000002, 0.05687193600000001, 0.0, 0.003919363430400001, 0.0010660668530688003, 0.0005628832984203267],
+ [0, 0.0, 0.0, 0.0148460736, 0.0, 0.0, 0.0],
+ [0.2, 0.07184, 0.0305296, 0.0027057913600000002, 0.003916241696, 0.0012533222120960001, 0.00049196611688704]]
+
       </pre>
              </div>
           </div>
