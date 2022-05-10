@@ -38,6 +38,5 @@ def forward_algorithm(A, B, pi, O):
 
     return forward_variable_array
 
-
-print(forward_algorithm(A_3a, B_3a, pi_3a, O_3))
-print(forward_algorithm(A_3b, B_3b, pi_3b, O_3))
+# print(forward_algorithm(A_3a, B_3a, pi_3a, O_3))
+# print(forward_algorithm(A_3b, B_3b, pi_3b, O_3))

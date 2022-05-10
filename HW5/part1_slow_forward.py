@@ -8,8 +8,6 @@ pi = [0.8, 0.2]
 
 def slow_forward(A, B, pi, O):
     L = 0
-    for i in range(len(pi)):
-        temp = pi[i] *
-        for j in range(len(B)):
-            for k in range(len(A)):
+    for state in range(len(O)):
+
 
