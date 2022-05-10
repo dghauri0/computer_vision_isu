@@ -19,7 +19,7 @@ def backward_algorithm(A, B, pi, O):
                 backward_variable_array[state][time] = 1
             else:
                 for i in range(len(pi)):
-                    backward_variable_array[state][time] += A[i][state] * B[i][O[time + 1]] * \
+                    backward_variable_array[state][time] += A[state][i] * B[i][O[time + 1]] * \
                                                             backward_variable_array[i][time + 1]
 
     return backward_variable_array
