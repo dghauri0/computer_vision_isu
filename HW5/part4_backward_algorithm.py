@@ -43,5 +43,5 @@ def backward_algorithm(A, B, pi, O):
 
 
 # print(backward_algorithm(A_ex, B_ex, pi_ex, O_ex))
-print(backward_algorithm(A_5a, B_5a, pi_5a, O_5))
-print(backward_algorithm(A_5b, B_5b, pi_5b, O_5))
+# print(backward_algorithm(A_5a, B_5a, pi_5a, O_5))
+# print(backward_algorithm(A_5b, B_5b, pi_5b, O_5))

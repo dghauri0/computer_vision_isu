@@ -9,5 +9,5 @@ pi = [0.8, 0.2]
 def slow_forward(A, B, pi, O):
     L = 0
     for state in range(len(O)):
-
+        ''
 
